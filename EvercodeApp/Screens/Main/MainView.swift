@@ -1,7 +1,17 @@
 import UIKit
 
-final class MainView: UIView {
+final class MainView: UIView, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return items.count
+        }
         
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
+            cell.textLabel?.text = items[indexPath.row]
+            return cell
+        }
+    
     lazy var tableView: UITableView = {
        
         let view = UITableView()
@@ -45,6 +55,8 @@ private extension MainView {
     func configureSubviews() {
         
         addSubview(tableView)
+        tableView.dataSource = self
+                tableView.register(UITableViewCell.self, forCellReuseIdentifier: "itemCell")
     }
 
     func configureSubviewsConstraints() {
